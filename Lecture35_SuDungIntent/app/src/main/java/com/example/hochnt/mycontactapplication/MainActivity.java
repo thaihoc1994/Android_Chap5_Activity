@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         //lấy mặc định SmsManager
         final SmsManager sms = SmsManager.getDefault();
         Intent msgSent = new Intent("ACTION_MSG_SENT");//gửi lệnh cho hệ thống điện thoại (gửi tin nhắn)
-//        Intent msgSent = new Intent(Intent.ACTION_SEND);
+        //Intent msgSent = new Intent(Intent.ACTION_SEND);
+
         //Khai báo pendingintent để kiểm tra kết quả
         //phải chờ khi nào xong mới co thể kích hoạt
         final PendingIntent pendingMsgSent = PendingIntent.getBroadcast(this, 0, msgSent, 0);
@@ -66,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
                 int result = getResultCode();
                 String msg="Gửi tin nhắn thành công";
                 if (result != Activity.RESULT_OK) {
-                    msg="Send failed";
+                    msg="Gửi tin nhắn thất bại";
                 }
                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
             }
         }, new IntentFilter("ACTION_MSG_SENT"));
         //Gọi hàm gửi tin nhắn đi
-        sms.sendTextMessage(c.getPhone(), null, editContent.getText()+"",
+        sms.sendTextMessage(txtSDT.getText().toString(), null, txtTinNhan.getText() +"",
                 pendingMsgSent, null);
         finish();
     }
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = Uri.parse("tel:" + txtSDT.getText().toString());
         Intent intent = new Intent(Intent.ACTION_CALL);//intent khong tuong minh
         intent.setData(uri);
+        //kiem tra su cho phep cua khach hang
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
